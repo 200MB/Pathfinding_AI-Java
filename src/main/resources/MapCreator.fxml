@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="1920" prefWidth="1392.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxml.controller.MapCreatorController">
+    <AnchorPane fx:id="mapGrid" layoutX="14.0" layoutY="7.0" prefHeight="520.0" prefWidth="1250.0" style="-fx-background-color: gray;" />
+   <TextField fx:id="rowTxt" layoutX="14.0" layoutY="549.0" promptText="Rows" />
+   <TextField fx:id="colTxt" layoutX="14.0" layoutY="589.0" promptText="Columns" />
+   <Button layoutX="182.0" layoutY="589.0" mnemonicParsing="false" onAction="#onGenerateBtnPressed" prefHeight="25.0" prefWidth="89.0" text="GenerateGrid" />
+   <Button layoutX="280.0" layoutY="589.0" mnemonicParsing="false" onAction="#save" prefHeight="25.0" prefWidth="89.0" text="Save" />
+   <Button layoutX="377.0" layoutY="589.0" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="98.0" text="Back to menu" />
+</AnchorPane>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="1920" prefWidth="1392.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxml.controller.MainMenuController">
+   <AnchorPane fx:id="mapGrid" layoutX="14.0" layoutY="7.0" prefHeight="520.0" prefWidth="1250.0" style="-fx-background-color: gray;" />
+   <Button fx:id="startBtn" layoutX="14.0" layoutY="550.0" mnemonicParsing="false" onAction="#start" prefHeight="38.0" prefWidth="93.0" text="Start" />
+   <Button fx:id="generateBtn" layoutX="143.0" layoutY="550.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="93.0" text="Generate" />
+   <Button fx:id="createBtn" layoutX="270.0" layoutY="550.0" mnemonicParsing="false" onAction="#onCreateBtnPressed" prefHeight="38.0" prefWidth="93.0" text="Create" />
+   <Button layoutX="392.0" layoutY="550.0" mnemonicParsing="false" onAction="#resetGrid" prefHeight="38.0" prefWidth="93.0" text="ResetGrid" />
+   <Button fx:id="resetBtn" layoutX="1170.0" layoutY="550.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="93.0" text="Reset Logs" />
+   <Button fx:id="importBtn1" layoutX="512.0" layoutY="550.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="93.0" text="Import" />
+   <Label layoutX="14.0" layoutY="609.0" prefHeight="38.0" prefWidth="220.0" text="Shift Left Click To Set Finish">
+      <font>
+         <Font size="17.0" />
+      </font>
+   </Label>
+   <Label layoutX="409.0" layoutY="609.0" prefHeight="38.0" prefWidth="299.0" text="Shift Right Click To Set Starting Point">
+      <font>
+         <Font size="17.0" />
+      </font>
+   </Label>
+   <Label layoutX="236.0" layoutY="609.0" prefHeight="38.0" prefWidth="175.0" text="Left Click To Set Path">
+      <font>
+         <Font size="17.0" />
+      </font>
+   </Label>
+   <Label layoutX="708.0" layoutY="609.0" prefHeight="38.0" prefWidth="220.0" text="Right Click To Set Barrier">
+      <font>
+         <Font size="17.0" />
+      </font>
+   </Label>
+
+</AnchorPane>
