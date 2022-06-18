@@ -10,9 +10,13 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 
 public class MainMenuController implements Initializable {
@@ -27,6 +31,8 @@ public class MainMenuController implements Initializable {
     protected static HashMap<String, Integer> gridData = new HashMap<>(); //contains all the IDs
 
     protected static GridPane savedGrid = null; //instance of gridPane
+
+    protected ArrayList<ArrayList<Integer>> paths = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -47,6 +53,8 @@ public class MainMenuController implements Initializable {
     }
 
     public void start() {
+        removeTrails();
+
         int count = 0;
         try {
             Directions[] branches = getAllAvailable4Bit(Integer.parseInt(startingPoint));
@@ -127,7 +135,24 @@ public class MainMenuController implements Initializable {
 
     protected boolean isGreen(int index) {
         if (index >= gridData.size() || index <= 0) return false;
-        return gridData.get(String.valueOf(index)).equals(1);
+        return gridData.get(String.valueOf(index)).equals(1) ||gridData.get(String.valueOf(index)).equals(2);
+    }
+
+    protected void showPath(ArrayList<Integer> path) {
+        for (Integer i : path) {
+            savedGrid.getChildren().get(i).setStyle("-fx-background-color: red;");
+        }
+    }
+
+    protected void displayShortest() {
+        showPath(paths.stream().sorted(Comparator
+                .comparing(ArrayList::size)).collect(Collectors.toList()).get(0));
+    }
+
+    private void removeTrails() {
+        for (int i = 1; i < gridData.size(); i++) {
+            if (gridData.get(String.valueOf(i)).equals(3)) gridData.put(String.valueOf(i),1);
+        }
     }
 
     protected boolean isFinish(int index) {

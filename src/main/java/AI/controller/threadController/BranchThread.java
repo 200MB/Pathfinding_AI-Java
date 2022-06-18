@@ -14,6 +14,11 @@ public class BranchThread extends MainMenuController implements Runnable {
     ArrayList<Integer> pathHistory = new ArrayList<>();
     Directions direction;
 
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+
+
     public void setDirection(Directions direction) {
         this.direction = direction;
     }
@@ -30,13 +35,21 @@ public class BranchThread extends MainMenuController implements Runnable {
         this.pathHistory = pathHistory;
     }
 
-    //needs branching and trail leaving
+
     public void run() {
         System.out.println("Created a new thread with Direction " + direction);
         System.out.println("index at " + index);
         do {
             moveCount++;
             pathHistory.add(index);
+            if (isFinish(index)) {
+                System.out.println(ANSI_YELLOW + "Thread found finish line!" + ANSI_RESET + "\n");
+                System.out.println(pathHistory);
+                pathHistory.add(index);
+                paths.add(pathHistory);
+                showPath(pathHistory);
+                return;
+            }
             Directions[] allBranches = getAllAvailable4Bit(index);
             int nulls = (int) Arrays.stream(allBranches).
                     filter(Objects::isNull).count();
@@ -48,12 +61,8 @@ public class BranchThread extends MainMenuController implements Runnable {
 
             index = move(index, direction);
 
-            if (isFinish(index)) {
-                System.out.println("Thread found finish line!");
-                pathHistory.add(index);
-                return;
-            }
-        } while (canMoveTo(move(index, direction)));
+        } while (canMoveTo(index));
+        System.out.println(ANSI_PURPLE + Thread.currentThread().getName() + " ENDED AT " + index + "\n" + ANSI_RESET);
     }
 
     private void createChildThread(Directions[] allBranches) {
