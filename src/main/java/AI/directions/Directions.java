@@ -1,4 +1,4 @@
-package fxml.directions;
+package AI.directions;
 
 public enum Directions {
     UP,

@@ -5,7 +5,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="1920" prefWidth="1392.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxml.controller.MainMenuController">
+<AnchorPane prefHeight="1920" prefWidth="1392.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AI.controller.fxmlController.MainMenuController">
    <AnchorPane fx:id="mapGrid" layoutX="14.0" layoutY="7.0" prefHeight="520.0" prefWidth="1250.0" style="-fx-background-color: gray;" />
    <Button fx:id="startBtn" layoutX="14.0" layoutY="550.0" mnemonicParsing="false" onAction="#start" prefHeight="38.0" prefWidth="93.0" text="Start" />
    <Button fx:id="generateBtn" layoutX="143.0" layoutY="550.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="93.0" text="Generate" />

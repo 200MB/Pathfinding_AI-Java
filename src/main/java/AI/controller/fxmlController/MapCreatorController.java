@@ -1,6 +1,6 @@
-package fxml.controller;
+package AI.controller.fxmlController;
 
-import fxml.opener.FxmlOpener;
+import AI.opener.FxmlOpener;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.TextField;
@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import java.util.HashMap;
 import java.util.stream.IntStream;
 
-public class MapCreatorController {
+public class MapCreatorController extends MainMenuController{
     @FXML
     private AnchorPane mapGrid;
     @FXML
@@ -21,38 +21,38 @@ public class MapCreatorController {
     @FXML
     private TextField colTxt;
 
-    private GridPane seatGrid = new GridPane();
+    private GridPane mapCreatorGrid = new GridPane();
 
-    private HashMap<String, Integer> gridData = new HashMap<>();
+    private final HashMap<String, Integer> mapCreatorGridData = new HashMap<>();
 
     //makes sure the grid stays fit and generates
     public void onGenerateBtnPressed() {
         mapGrid.getChildren().clear();
-        seatGrid = new GridPane();
-        seatGrid.setHgap(1);
-        seatGrid.setVgap(1);
-        seatGrid.setGridLinesVisible(true);
-        seatGrid.setBackground(new Background(new BackgroundFill(Color.rgb(220, 220, 220), new CornerRadii(2.5), new Insets(-1.0))));
+        mapCreatorGrid = new GridPane();
+        mapCreatorGrid.setHgap(1);
+        mapCreatorGrid.setVgap(1);
+        mapCreatorGrid.setGridLinesVisible(true);
+        mapCreatorGrid.setBackground(new Background(new BackgroundFill(Color.rgb(220, 220, 220), new CornerRadii(2.5), new Insets(-1.0))));
         int rows = Integer.parseInt(rowTxt.getText());
         int cols = Integer.parseInt(colTxt.getText());
         for (int i = 0; i < cols; i++) {
             ColumnConstraints colConst = new ColumnConstraints();
             colConst.setPercentWidth(mapGrid.getWidth() / cols);
-            seatGrid.getColumnConstraints().add(colConst);
+            mapCreatorGrid.getColumnConstraints().add(colConst);
         }
         for (int i = 0; i < rows; i++) {
             RowConstraints rowConst = new RowConstraints();
             rowConst.setPercentHeight(mapGrid.getHeight() / rows);
-            seatGrid.getRowConstraints().add(rowConst);
+            mapCreatorGrid.getRowConstraints().add(rowConst);
         }
-        seatGrid.setPrefSize(mapGrid.getWidth(), mapGrid.getHeight());
+        mapCreatorGrid.setPrefSize(mapGrid.getWidth(), mapGrid.getHeight());
         setOnActionGrid(rows, cols);
-        mapGrid.getChildren().add(seatGrid);
+        mapGrid.getChildren().add(mapCreatorGrid);
     }
 
     //-1 starting point, 0 barrier, 1 path, 2 finish
     private void setOnActionGrid(int rows, int cols) {
-        IntStream.range(1, rows * cols + 1).forEach(e -> gridData.put(String.valueOf(e), 0));
+        IntStream.range(1, rows * cols + 1).forEach(e -> mapCreatorGridData.put(String.valueOf(e), 0));
         int count = 1;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -62,40 +62,40 @@ public class MapCreatorController {
                 stack.getChildren().add(new Text(String.valueOf(count)));
                 stack.setOnMouseClicked(mouseEvent -> {
                     if (mouseEvent.getButton() == MouseButton.PRIMARY && mouseEvent.isShiftDown()
-                            && !gridData.containsValue(2)) {
+                            && !mapCreatorGridData.containsValue(2)) {
                         stack.getChildren().clear();
                         stack.setStyle("-fx-background-color: yellow;");
                         stack.getChildren().add(new Text("Finish"));
-                        gridData.put(stack.getId(), 2);
-                        MainMenuController.finish = stack.getId();
+                        mapCreatorGridData.put(stack.getId(), 2);
+                        finish = stack.getId();
                         System.out.println("changed finish");
                     } else if (mouseEvent.getButton() == MouseButton.PRIMARY) {
                         stack.getChildren().clear();
                         stack.setStyle("-fx-background-color: green;");
-                        gridData.put(stack.getId(), 1);
+                        mapCreatorGridData.put(stack.getId(), 1);
                     } else if (mouseEvent.getButton() == MouseButton.SECONDARY && mouseEvent.isShiftDown()
-                            && !gridData.containsValue(-1)) {
+                            && !mapCreatorGridData.containsValue(-1)) {
                         stack.getChildren().clear();
                         stack.setStyle("-fx-background-color: orange;");
                         stack.getChildren().add(new Text("Starting Point"));
-                        gridData.put(stack.getId(), -1);
-                        MainMenuController.startingPoint = stack.getId();
+                        mapCreatorGridData.put(stack.getId(), -1);
+                        startingPoint = stack.getId();
                         System.out.println("changed startingPoint");
                     } else if (mouseEvent.getButton() == MouseButton.SECONDARY) {
                         stack.getChildren().clear();
                         stack.setStyle("-fx-background-color: gray;");
-                        gridData.put(stack.getId(), 0);
+                        mapCreatorGridData.put(stack.getId(), 0);
                     }
                 });
-                seatGrid.add(stack, j, i);
+                mapCreatorGrid.add(stack, j, i);
                 count++;
             }
         }
     }
 
     public void save() {
-        MainMenuController.savedGrid = seatGrid;
-        MainMenuController.gridData = gridData;
+        savedGrid = mapCreatorGrid;
+        gridData = mapCreatorGridData;
     }
 
     public void goBack() {

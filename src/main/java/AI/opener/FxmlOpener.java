@@ -1,4 +1,4 @@
-package fxml.opener;
+package AI.opener;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
