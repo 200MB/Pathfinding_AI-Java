@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import java.util.HashMap;
 import java.util.stream.IntStream;
 
-public class MapCreatorController extends MainMenuController{
+public class MapCreatorController extends MainMenuController {
     @FXML
     private AnchorPane mapGrid;
     @FXML
@@ -22,6 +22,7 @@ public class MapCreatorController extends MainMenuController{
     private TextField colTxt;
 
     private GridPane mapCreatorGrid = new GridPane();
+
 
     private final HashMap<String, Integer> mapCreatorGridData = new HashMap<>();
 

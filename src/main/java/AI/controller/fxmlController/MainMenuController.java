@@ -12,10 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -32,7 +29,7 @@ public class MainMenuController implements Initializable {
 
     protected static GridPane savedGrid = null; //instance of gridPane
 
-    protected ArrayList<ArrayList<Integer>> paths = new ArrayList<>();
+    protected static ArrayList<ArrayList<Integer>> paths = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -48,8 +45,10 @@ public class MainMenuController implements Initializable {
     }
 
     public void resetGrid() {
-        mapGrid.getChildren().clear();
-        gridData = new HashMap<>();
+        if (savedGrid != null) {
+            mapGrid.setPrefSize(savedGrid.getWidth(), savedGrid.getHeight());
+            mapGrid.getChildren().add(savedGrid);
+        }
     }
 
     public void start() {
@@ -72,6 +71,7 @@ public class MainMenuController implements Initializable {
                     e.getStackTrace().length);
         }
 
+
     }
 
     //3 means trailed. another thread already passed it.
@@ -79,7 +79,7 @@ public class MainMenuController implements Initializable {
         Directions[] available = new Directions[4];
         int count = 0;
         for (Directions direction : Directions.values()) {
-            if (isGreen(move(index, direction)) && !gridData.get(String.valueOf(index)).equals(3)) {
+            if (canMoveTo(move(index, direction),index,direction) && !gridData.get(String.valueOf(index)).equals(3)) {
                 available[count] = direction;
                 count++;
             }
@@ -125,33 +125,31 @@ public class MainMenuController implements Initializable {
             }
         }
     }
-    //could be buggy
 
-    protected boolean canMoveTo(int index) {
-        if (index >= gridData.size() || index <= 0) return false;
+
+    protected boolean canMoveTo(int index,int prevIndex,Directions direction) {
+        int row = getRowLocation(index);
+        int prevRow = getRowLocation(prevIndex);
+        if (index > gridData.size() || index < 0) return false;
+        if (row != prevRow && direction.equals(Directions.RIGHT) || row != prevRow && direction.equals(Directions.LEFT)) return false;
         return gridData.get(String.valueOf(index)).equals(1) || gridData.get(String.valueOf(index)).equals(2)
                 || gridData.get(String.valueOf(index)).equals(-1);
     }
 
-    protected boolean isGreen(int index) {
-        if (index >= gridData.size() || index <= 0) return false;
-        return gridData.get(String.valueOf(index)).equals(1) ||gridData.get(String.valueOf(index)).equals(2);
-    }
-
-    protected void showPath(ArrayList<Integer> path) {
+    protected synchronized void showPath(ArrayList<Integer> path) {
         for (Integer i : path) {
             savedGrid.getChildren().get(i).setStyle("-fx-background-color: red;");
         }
     }
 
-    protected void displayShortest() {
+    protected synchronized void displayShortest() {
         showPath(paths.stream().sorted(Comparator
                 .comparing(ArrayList::size)).collect(Collectors.toList()).get(0));
     }
 
     private void removeTrails() {
         for (int i = 1; i < gridData.size(); i++) {
-            if (gridData.get(String.valueOf(i)).equals(3)) gridData.put(String.valueOf(i),1);
+            if (gridData.get(String.valueOf(i)).equals(3)) gridData.put(String.valueOf(i), 1);
         }
     }
 

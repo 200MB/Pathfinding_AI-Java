@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 public class BranchThread extends MainMenuController implements Runnable {
     int index;
+    int prevIndex;
     Integer moveCount = 1;
     ArrayList<Integer> pathHistory = new ArrayList<>();
     Directions direction;
@@ -37,31 +38,31 @@ public class BranchThread extends MainMenuController implements Runnable {
 
 
     public void run() {
-        System.out.println("Created a new thread with Direction " + direction);
+        System.out.println("Created " + Thread.currentThread().getName() + " with Direction " + direction);
         System.out.println("index at " + index);
         do {
             moveCount++;
-            pathHistory.add(index);
             if (isFinish(index)) {
-                System.out.println(ANSI_YELLOW + "Thread found finish line!" + ANSI_RESET + "\n");
+                System.out.println(ANSI_YELLOW + Thread.currentThread().getName() + " found finish line!" + ANSI_RESET + "\n");
                 System.out.println(pathHistory);
                 pathHistory.add(index);
-                paths.add(pathHistory);
-                showPath(pathHistory);
+                paths.add(this.pathHistory);
+                displayShortest();
                 return;
             }
+            pathHistory.add(index);
             Directions[] allBranches = getAllAvailable4Bit(index);
+            setTrailMark(index);
             int nulls = (int) Arrays.stream(allBranches).
                     filter(Objects::isNull).count();
-            setTrailMark(index);
 
-            if (4 - nulls >= 1) { // needs a different check cuz it doesnt work if it hits deadend
+            if (4 - nulls >= 1) {
                 createChildThread(allBranches);
             }
-
+            prevIndex = index;
             index = move(index, direction);
 
-        } while (canMoveTo(index));
+        } while (canMoveTo(index,prevIndex,direction));
         System.out.println(ANSI_PURPLE + Thread.currentThread().getName() + " ENDED AT " + index + "\n" + ANSI_RESET);
     }
 
